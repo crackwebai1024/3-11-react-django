@@ -2,7 +2,7 @@ import * as actionTypes from "../actions/actionTypes";
 import { updateObject } from "../utility";
 
 const initialState = {
-    title: "Recommedation System",
+    title: "Recommendation System",
     category: "Article Recommendation"
 };
 

@@ -10,7 +10,6 @@ class NlpDashboard extends Component {
         return (
             <div>
                 <div style={{ height: 40 }}></div>
-
                 <div className="row wrapper">
                     <div className="sidebar col-md-2">
                         <div className="imground">
