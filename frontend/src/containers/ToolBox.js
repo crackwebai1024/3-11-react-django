@@ -4,15 +4,25 @@ import { connect } from "react-redux";
 import { api_request } from "../store/actions/user";
 
 class ToolBox extends React.Component {
-
+    state = {
+        idname: "textcapture",
+        btncaption: "Search"
+    }
     send_api_request = (e) => {
         var url = this.props.category;
-        var text = document.getElementById("textcapture").value;
+        var text = document.getElementById(this.state.idname).value;
         this.props.api_request(url, text);
     }
 
     render() {
         var category = this.props.category;
+        if (category == "Article Recommender" && this.state.idname != "articlecapture") {
+            this.setState({ idname: "articlecapture", btncaption: "Search" });
+        }
+        if (category != "Article Recommender" && this.state.idname == "articlecapture") {
+            this.setState({ idname: "textcapture", btncaption: "Detect" });
+        }
+        debugger
         return (
             <div>
                 <div style={{ height: 60 }}></div>
@@ -20,8 +30,8 @@ class ToolBox extends React.Component {
                     <div style={{ height: 30 }}></div>
                     <div className="wrapperform">
                         <div><h5 className="title">{category}</h5></div>
-                        <textarea className="form-control" id="textcapture"></textarea>
-                        <button className="cusbtn" onClick={this.send_api_request}>Detect</button>
+                        <textarea className="form-control" id={this.state.idname}></textarea>
+                        <button className="cusbtn" onClick={this.send_api_request}>{this.state.btncaption}</button>
                     </div>
                 </div>
             </div>

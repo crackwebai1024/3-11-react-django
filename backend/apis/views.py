@@ -52,13 +52,34 @@ from matplotlib.figure import Figure
 from django.http import HttpResponse, JsonResponse
 class SentimentAnalysis(APIView):
     def get(self, request):
-        print(request)
         text = self.request.query_params.get('text')
         sid_obj = SentimentIntensityAnalyzer()
         sentiment_dict = sid_obj.polarity_scores(text)       
         labels = ['Positive', 'Negative', 'Neutral']
         colors = ['#F7464A', '#46BFBD', '#FDB45C']
         values = [sentiment_dict['pos'], sentiment_dict['neg'], sentiment_dict['neu']]
-        print(labels, colors, values)
         response_data={"labels": labels, "colors": colors, "values": values}
         return Response(response_data)
+
+class ArticleRecommender(APIView):
+    def get(self, request):
+        print("I am here")
+        df = pd.read_csv("apis/data/keyworsemerj1.csv") 
+        print("I am here")
+        int_features = [x for x in request.form.values()]
+        results = df[df["KEYWORDS"].str.contains(int_features[0])] 
+        url_title = results.drop(["KEYWORDS", "CONTENT"], axis=1)
+        return render_template('index.html', tables=[url_title.values])
+
+
+def predict():
+    df = pd.read_csv("keyworsemerj1.csv") 
+    
+    # Preview the   first 5 lines of the loaded data 
+    #searchkey =  request.form.values()
+    int_features = [x for x in request.form.values()]
+    
+    results = df[df["KEYWORDS"].str.contains(int_features[0])] 
+    url_title = results.drop(["KEYWORDS", "CONTENT"], axis=1)
+
+    return render_template('index.html', tables=[url_title.values])

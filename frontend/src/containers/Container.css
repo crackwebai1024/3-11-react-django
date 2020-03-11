@@ -96,8 +96,12 @@ li{
     padding: 0px !important;
 }
 
-.form-control{
+#textcapture{
     height: 150px !important;
+}
+
+#articlecapture{
+    height: 40px !important;
 }
 
 .title{
@@ -137,6 +141,5 @@ li{
 }
 
 .cattitle{
-    margin-top: 0px !important;
-    
+    margin-top: 0px !important;    
 }

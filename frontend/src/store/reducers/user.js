@@ -3,7 +3,7 @@ import { updateObject } from "../utility";
 
 const initialState = {
     title: "Recommendation System",
-    category: "Article Recommendation"
+    category: "Article Recommender"
 };
 
 const user_item_tool = (state, action) => {
