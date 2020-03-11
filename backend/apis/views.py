@@ -63,23 +63,92 @@ class SentimentAnalysis(APIView):
 
 class ArticleRecommender(APIView):
     def get(self, request):
-        print("I am here")
         df = pd.read_csv("apis/data/keyworsemerj1.csv") 
-        print("I am here")
-        int_features = [x for x in request.form.values()]
+        int_features = [x for x in self.request.query_params.get('text')]
         results = df[df["KEYWORDS"].str.contains(int_features[0])] 
         url_title = results.drop(["KEYWORDS", "CONTENT"], axis=1)
-        return render_template('index.html', tables=[url_title.values])
+        response_data={"tables": url_title.values}
+        return Response(response_data)
 
+class LanguageDetection(APIView):
+    def get(self, request):
+        text = self.request.query_params.get('text')
+        results = detect(text)
+        response_data = {"rawtext": results}
+        return Response(response_data)
 
-def predict():
-    df = pd.read_csv("keyworsemerj1.csv") 
-    
-    # Preview the   first 5 lines of the loaded data 
-    #searchkey =  request.form.values()
-    int_features = [x for x in request.form.values()]
-    
-    results = df[df["KEYWORDS"].str.contains(int_features[0])] 
-    url_title = results.drop(["KEYWORDS", "CONTENT"], axis=1)
+class TextSummarization(APIView):
 
-    return render_template('index.html', tables=[url_title.values])
+    def tokenizer(self, s):
+        tokens = []
+        for word in s.split(' '):
+            tokens.append(word.strip().lower())
+        return tokens
+
+    def sent_tokenizer(self, s):
+        sents = []
+        for sent in s.split('.'):
+            sents.append(sent.strip())
+        return sents
+
+    def count_words(self,tokens):
+        word_counts = {}
+        for token in tokens:
+            if token not in stop_words and token not in punctuation:
+                if token not in word_counts.keys():
+                    word_counts[token] = 1
+                else:
+                    word_counts[token] += 1
+        return word_counts
+
+    def word_freq_distribution(self, word_counts):
+        freq_dist = {}
+        max_freq = max(word_counts.values())
+        for word in word_counts.keys():  
+            freq_dist[word] = (word_counts[word]/max_freq) #divide the number of occurrences of each word by the number of occurrences of the word which occurs most in the document
+        return freq_dist
+
+    def score_sentences(self, sents, freq_dist, max_len=40):
+        sent_scores = {}  
+        for sent in sents:
+            words = sent.split(' ')
+            for word in words:
+                if word.lower() in freq_dist.keys():
+                    if len(words) < max_len:
+                        if sent not in sent_scores.keys():
+                            sent_scores[sent] = freq_dist[word.lower()]
+                        else:
+                            sent_scores[sent] += freq_dist[word.lower()]
+        return sent_scores
+
+#sent_scores = score_sentences(sents, freq_dist)
+#sent_scores
+
+# select the top k sentences to represent the summary of the article.
+
+    def summarize(self, sent_scores, k):
+        top_sents = Counter(sent_scores) 
+        summary = ''
+        scores = []
+        
+        top = top_sents.most_common(k)
+        for t in top: 
+            summary += t[0].strip()+'. '
+            scores.append((t[1], t[0]))
+        return summary[:-1], scores
+
+# call the function to generate the summary
+    def get(self, request):
+        text = self.request.query_params.get('text')
+        print(type(text))
+        #######
+        tokens = self.tokenizer(text)
+        sents = self.sent_tokenizer(text)
+        word_counts = self.count_words(tokens)
+        freq_dist = self.word_freq_distribution(word_counts)
+        sent_scores = self.score_sentences(sents, freq_dist)
+        summary, summary_sent_scores = self.summarize(sent_scores, 5)
+        datatextsum = [summary_sent_scores,summary,text]
+        response_data = {"textdata": datatextsum}
+        #########
+        return Response(response_data)

@@ -1,7 +1,8 @@
-from django.urls import path
-from .views import SentimentAnalysis, ArticleRecommender
+from django.urls import path, include
+from .views import SentimentAnalysis, ArticleRecommender, LanguageDetection, TextSummarization
 urlpatterns = [
-    path('api/SentimentAnalysis/', SentimentAnalysis.as_view()),
-    path('api/ArticleRecommender/', ArticleRecommender.as_view()),
-    path('', SentimentAnalysis.as_view()),
+    path('SentimentAnalysis/', SentimentAnalysis.as_view()),
+    path('ArticleRecommender/', ArticleRecommender.as_view()),
+    path('LanguageDetection/', LanguageDetection.as_view()),
+    path('TextSummarization/', TextSummarization.as_view()),
 ]
