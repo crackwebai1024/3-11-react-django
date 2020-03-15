@@ -1,4 +1,5 @@
 import * as actionTypes from "./actionTypes";
+import { URL } from "./config";
 import axios from "axios";
 
 export const user_item_tool = (titleid, category) => {
@@ -16,25 +17,38 @@ export const user_cat_tool = (title) => {
     };
 };
 
+export const responseSuccess = (res) => {
+    return {
+        type: actionTypes.RESPONSE_SUCCESS,
+        data: res.data,
+        reserror: "",
+    }
+}
+
+export const responseFailed = (error) => {
+    return {
+        type: actionTypes.RESPONSE_FAILED,
+        data: "",
+        reserror: error
+    }
+}
+
 export const api_request = (url, text) => {
-    console.log(`http://127.0.0.1:8000/{url}`)
+    console.log(URL, url)
     url = url.replace(/\s/g, "");
-    url = "http://127.0.0.1:8000/api/" + url + "/" + `?text=${text}`;
+    url = URL + "api/" + url + "/" + `?text=${text}`;
     console.log(url, text)
     debugger
     return dispatch => {
-        debugger
-        // axios.defaults.headers = {
-        //     "Content-Type": "application/json",
-        //     Authorization: `Token ${token}`
-        // };
         axios
             .get(url)
             .then(res => {
                 debugger
+                dispatch(responseSuccess(res));
             })
             .catch(err => {
-                debugger
+                const error = "Error 404 Page Not Found"
+                dispatch(responseFailed(error));
             });
     };
 };

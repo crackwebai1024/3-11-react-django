@@ -3,7 +3,9 @@ import { updateObject } from "../utility";
 
 const initialState = {
     title: "Recommendation System",
-    category: "Article Recommender"
+    category: "Article Recommender",
+    data: "",
+    reserror: "",
 };
 
 const user_item_tool = (state, action) => {
@@ -53,12 +55,22 @@ const user_cat_tool = (state, action) => {
     });
 };
 
+const res = (state, action) => {
+    return updateObject(state, {
+        data: action.data,
+        reserror: action.reserror
+    });
+};
+
 const reducer = (state = initialState, action) => {
     switch (action.type) {
         case actionTypes.USER_CAT:
             return user_cat_tool(state, action);
         case actionTypes.USER_ITEM:
             return user_item_tool(state, action);
+        case actionTypes.RESPONSE_SUCCESS:
+        case actionTypes.RESPONSE_FAILED:
+            return res(state, action);
         default:
             return state;
     }

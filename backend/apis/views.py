@@ -50,6 +50,12 @@ from matplotlib.figure import Figure
 ### machine learning module import ###
 
 from django.http import HttpResponse, JsonResponse
+
+nlp = spacy.load('en_core_web_sm')
+HTML_WRAPPER = """<div style="overflow-x: auto; border: 1px solid #e6e9ef; border-radius: 0.25rem; padding: 1rem">{}</div>"""
+
+
+
 class SentimentAnalysis(APIView):
     def get(self, request):
         text = self.request.query_params.get('text')
@@ -140,7 +146,6 @@ class TextSummarization(APIView):
 # call the function to generate the summary
     def get(self, request):
         text = self.request.query_params.get('text')
-        print(type(text))
         #######
         tokens = self.tokenizer(text)
         sents = self.sent_tokenizer(text)
@@ -152,3 +157,98 @@ class TextSummarization(APIView):
         response_data = {"textdata": datatextsum}
         #########
         return Response(response_data)
+
+class EntityExtraction(APIView):
+    def get(self, request):
+        raw_text = self.request.query_params.get('text')
+        docx = nlp(raw_text)
+        html = displacy.render(docx,style="ent")
+        html = html.replace("\n\n","\n")
+        result = HTML_WRAPPER.format(html)
+        response_data = {"rawtext": raw_text, "result": result}
+        return Response(response_data)
+
+class KeywordExtraction(APIView):
+    def get(self, request):
+        text = self.request.query_params.get('text')
+
+        # Reka setup with stopword directory
+        stop_dir = "apis/data/a.txt"
+        rake_object = RAKE.Rake(stop_dir)
+
+        # Extract keywords
+        keywords = rake_object.run(text)
+        response_data = {"keywords": keywords}
+        return Response(response_data)
+
+class ArticleExtraction(APIView):
+    def get(self, request):
+        url = [x for x in self.request.query_params.get('text')]
+        linksdata = url[0]
+        headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36'}
+        res = requests.get(linksdata, headers=headers)
+        html_page = res.content
+        soup = BeautifulSoup(html_page, 'html.parser')
+        texts = soup.find_all('p')
+        data = ''
+        NEWLINE = '\n'
+        for p in texts:
+            p = p.text
+            data += p
+            data += NEWLINE
+        tokens = tokenizer(data)
+        sents = sent_tokenizer(data)
+        word_counts = count_words(tokens)
+        freq_dist = word_freq_distribution(word_counts)
+        sent_scores = score_sentences(sents, freq_dist)
+        summary, summary_sent_scores = summarize(sent_scores, 5)
+        datatextsum = [summary,data]
+        return render_template('articleextract.html',textdata = datatextsum)
+
+class Tokenize(APIView):
+    def get(self, request):
+        text = self.request.query_params.get('text')
+        tokens = word_tokenize(text)
+        text = [i for i in tokens]
+        response_data = {"result": text}
+        return Response(response_data)
+
+class ConvertUppercasetoLower(APIView):
+    def get(self, request):
+        text = self.request.query_params.get('text')
+        input_str = text.lower()
+        response_data = {"result": input_str}
+        return Response(response_data)
+
+class RemoveNumbers(APIView):
+    def get(self, request):
+        text = self.request.query_params.get('text')
+        result = re.sub(r"\d+", "", text)
+        response_data = {"result": result}
+        return Response(response_data)
+
+class RemoveWhiteSpaces(APIView):
+    def get(self, request):
+        text = self.request.query_params.get('text')
+        result = text.replace(" ", "")
+        response_data = {"result": result}
+        return Response(response_data)
+
+class RemoveStopwords(APIView):
+    def get(self, request):
+        text = self.request.query_params.get('text')
+        stop_words = set(stopwords.words('english'))
+        word_tokens = word_tokenize(text) 
+        text = [w for w in word_tokens if not w in stop_words] 
+        text = [] 
+        for w in word_tokens: 
+            if w not in stop_words: 
+                text.append(w)
+        response_data = {"result": text}
+        return Response(response_data)
+
+class Plagarism(APIView):
+    def get(self, request):
+        response_data = {"result": text}
+        return Response(response_data)
+

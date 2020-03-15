@@ -2,6 +2,7 @@ import React from "react";
 import "./Container.css";
 import { connect } from "react-redux";
 import { api_request } from "../store/actions/user";
+import Result from "./Result";
 
 class ToolBox extends React.Component {
     state = {
@@ -33,6 +34,9 @@ class ToolBox extends React.Component {
                         <textarea className="form-control" id={this.state.idname}></textarea>
                         <button className="cusbtn" onClick={this.send_api_request}>{this.state.btncaption}</button>
                     </div>
+                </div>
+                <div>
+                    <Result />
                 </div>
             </div>
         )

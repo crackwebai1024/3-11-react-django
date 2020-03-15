@@ -75,20 +75,52 @@ li{
     border-bottom-left-radius: 10px;
 }
 
+.subul>li:active{
+    color: #7386D5;
+    background-color:  rgb(235, 235, 244);
+    border-top-left-radius: 10px ;
+    border-bottom-left-radius: 10px;
+}
+
 .txtinput{
     width: 90% ;
     margin-left: 5%; 
-    height: 300px;
+    border-radius: 10px;
+    background-color: white;
+    border-left-color: red !important;
+    border-left-width: 3px !important;
+    border-left-style: solid;
+    padding: 20 10 20 10 !important;
+    overflow: auto !important;
+}
+
+.resultinput{
+    width: 90% ;
+    margin-left: 5%; 
+    height: 250px;
     border-radius: 10px;
     background-color: white;
     padding: 20 10 20 10 !important;
+    display : flex !important;
+    border-left-color: blue !important;
+    border-left-width: 3px !important;
+    border-left-style: solid;
 }
 
 .wrapperform{
     width: 90% ;
     margin-left: 5%; 
-    height: 250px;
+    margin-bottom:2%;
     background-color: white;
+    overflow: auto !important;
+}
+
+.resultform{
+    width: 90% ;
+    margin-left: 5%; 
+    padding-top: 40px;
+    background-color: white;
+    overflow: auto !important;
 }
 
 .bodybar{

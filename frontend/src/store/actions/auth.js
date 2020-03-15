@@ -1,5 +1,6 @@
 import axios from "axios";
 import * as actionTypes from "./actionTypes";
+import { URL } from "./config";
 
 export const authStart = () => {
   return {
@@ -40,9 +41,8 @@ export const checkAuthTimeout = expirationTime => {
 export const authLogin = (username, password) => {
   return dispatch => {
     dispatch(authStart());
-    console.log(password)
     axios
-      .post("http://127.0.0.1:8000/rest-auth/login/", {
+      .post(URL + "rest-auth/login/", {
         username: username,
         password: password
       })
@@ -64,7 +64,7 @@ export const authSignup = (username, email, password1, password2) => {
   return dispatch => {
     dispatch(authStart());
     axios
-      .post("http://127.0.0.1:8000/rest-auth/registration/", {
+      .post(URL + "rest-auth/registration/", {
         username: username,
         email: email,
         password1: password1,
