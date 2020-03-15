@@ -175,3 +175,8 @@ li{
 .cattitle{
     margin-top: 0px !important;    
 }
+
+#resulttext{
+    background-color: black;
+    color:white;
+}

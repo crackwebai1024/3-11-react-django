@@ -4,15 +4,40 @@ import { connect } from "react-redux";
 class KeywordExtraction extends React.Component {
 
     render() {
+        var display = "";
+        const items = [];
+        var i = 0;
+        if (this.props.data != "") {
+            display = this.props.data["keywords"];
+            for (var x of display) {
+                i += 1;
+                items.push(<tr>
+                    <th scope="row">{i}</th>
+                    <td>{x[0]}</td>
+                    <td>{x[1]}</td>
+                </tr>)
+            }
+        }
+
+        if (this.props.error != "") {
+            items.push(this.props.reserror)
+            console.log(items)
+        }
         return (
             <div>
                 <div style={{ height: 30 }}></div>
-                <div>
-                    <div style={{ height: 30 }}></div>
-                    <div>
-                        <div><h5 className="title">Result</h5></div>
-                    </div>
-                </div>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Keyword</th>
+                            <th scope="col">Score</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {items}
+                    </tbody>
+                </table>
             </div>
         )
     }
@@ -20,7 +45,8 @@ class KeywordExtraction extends React.Component {
 
 const mapStateToProps = state => {
     return {
-        category: state.user.category
+        data: state.user.data,
+        error: state.user.reserror
     };
 };
 

@@ -20,7 +20,8 @@ class RemovePunctuation extends React.Component {
 
 const mapStateToProps = state => {
     return {
-        category: state.user.category
+        data: state.user.data,
+        error: state.user.reserror
     };
 };
 

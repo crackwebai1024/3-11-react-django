@@ -10,7 +10,6 @@ class Plagarism extends React.Component {
                 <div>
                     <div style={{ height: 30 }}></div>
                     <div>
-                        <div><h5 className="title">Result</h5></div>
                     </div>
                 </div>
             </div>
@@ -20,7 +19,8 @@ class Plagarism extends React.Component {
 
 const mapStateToProps = state => {
     return {
-        category: state.user.category
+        data: state.user.data,
+        error: state.user.reserror
     };
 };
 

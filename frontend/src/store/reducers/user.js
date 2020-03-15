@@ -27,7 +27,9 @@ const user_item_tool = (state, action) => {
 
     return updateObject(state, {
         title: title,
-        category: action.category
+        category: action.category,
+        data: "",
+        reserror: "",
     });
 };
 
@@ -51,7 +53,9 @@ const user_cat_tool = (state, action) => {
 
     return updateObject(state, {
         title: action.title,
-        category: category
+        category: category,
+        data: "",
+        reserror: "",
     });
 };
 

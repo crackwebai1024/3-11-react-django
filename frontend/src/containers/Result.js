@@ -43,7 +43,7 @@ class Result extends React.Component {
                 return <Lemmatization />;
             case "Tokenize":
                 return <Tokenize />;
-            case "Convert Uppercase To Lower":
+            case "Convert Uppercase to Lower":
                 return <ConvertUppercaseToLower />;
             case "Remove Numbers":
                 return <RemoveNumbers />;

@@ -4,13 +4,16 @@ import { connect } from "react-redux";
 class RemoveNumbers extends React.Component {
 
     render() {
+        var lowertxt = ""
+        if (this.props.data != "") {
+            lowertxt = this.props.data["result"]
+        }
         return (
             <div>
                 <div style={{ height: 30 }}></div>
                 <div>
-                    <div style={{ height: 30 }}></div>
                     <div>
-                        <div><h5 className="title">Result</h5></div>
+                        {lowertxt}
                     </div>
                 </div>
             </div>
@@ -20,7 +23,8 @@ class RemoveNumbers extends React.Component {
 
 const mapStateToProps = state => {
     return {
-        category: state.user.category
+        data: state.user.data,
+        error: state.user.reserror
     };
 };
 

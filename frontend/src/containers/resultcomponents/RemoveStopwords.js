@@ -4,13 +4,22 @@ import { connect } from "react-redux";
 class RemoveStopwords extends React.Component {
 
     render() {
+        var data = [];
+        var stopwords = "";
+        data = this.props.data["result"]
+        debugger
+        if (data != []) {
+            for (var x in data) {
+                stopwords += " '" + data[x] + "', "
+            }
+        }
+
         return (
             <div>
                 <div style={{ height: 30 }}></div>
                 <div>
-                    <div style={{ height: 30 }}></div>
                     <div>
-                        <div><h5 className="title">Result</h5></div>
+                        {stopwords}
                     </div>
                 </div>
             </div>
@@ -20,7 +29,8 @@ class RemoveStopwords extends React.Component {
 
 const mapStateToProps = state => {
     return {
-        category: state.user.category
+        data: state.user.data,
+        error: state.user.reserror
     };
 };
 

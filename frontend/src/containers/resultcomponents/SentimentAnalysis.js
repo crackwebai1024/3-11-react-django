@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-// import Chart from "./Chart";
+import Chart from "./Chart";
 
 class SentimentAnalysis extends React.Component {
 
@@ -11,7 +11,7 @@ class SentimentAnalysis extends React.Component {
             <div>
                 <div style={{ height: 30 }}></div>
                 <div>
-                    {/* <Chart /> */}
+                    <Chart />
                 </div>
             </div>
         )
