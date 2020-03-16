@@ -14,15 +14,13 @@ class NlpDashboard extends Component {
 
 
     render() {
-        const { title } = this.props.title;
+        var title = this.props.title;
         var hisclick = this.props.click;
 
         if (!hisclick) {
-            debugger
             var item = <ToolBox />
         }
         else {
-            debugger
             var item = <His />
         }
 
@@ -43,7 +41,7 @@ class NlpDashboard extends Component {
                             </div>
                             <div className="col-md-8"></div>
                             <div className="col-md-1">
-                                <button className="btn btn-primary right" onClick={this.seehistory}>See history</button>
+                                <button className="btn btn-primary" onClick={this.seehistory}>See history</button>
                             </div>
                         </div>
                         {item}

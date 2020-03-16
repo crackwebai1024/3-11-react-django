@@ -6,13 +6,11 @@ class His extends React.Component {
     render() {
         const items = [];
         var data = this.props.hisdata;
-        debugger
         if (data != "") {
             var action = data["action"];
             var text = data["text"];
             var time = data["time"];
             var lent = action.length;
-            debugger
             for (var i = 0; i < lent; i++) {
                 items.push(<tr>
                     <th scope="row">{i + 1}</th>
@@ -22,7 +20,6 @@ class His extends React.Component {
                 </tr>)
             }
         }
-        debugger
         return (
             <div className="hisdiv">
                 <div style={{ height: 30 }}></div>

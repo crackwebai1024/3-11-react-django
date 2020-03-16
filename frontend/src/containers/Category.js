@@ -5,13 +5,11 @@ import { connect } from "react-redux";
 
 class Category extends React.Component {
     cat_click = (e) => {
-        debugger
         var title = e.target.text;
         this.props.cat_tool(title);
     }
 
     item_click = (e) => {
-        debugger
         var titleid = e.target.name;
         var category = e.target.text;
         this.props.item_tool(titleid, category);

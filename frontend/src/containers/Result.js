@@ -66,8 +66,10 @@ class Result extends React.Component {
                 <div style={{ height: 30 }}></div>
                 <div className="resultinput">
                     <div className="resultform">
-                        <div><h5 className="title">Result</h5></div>
-                        {this.getComponent()}
+                        <div style={{ paddingLeft: 30 }}><h5 className="title">Result</h5></div>
+                        <div className="resulttable">
+                            {this.getComponent()}
+                        </div>
                     </div>
                 </div>
             </div>

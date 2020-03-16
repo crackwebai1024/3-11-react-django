@@ -9,6 +9,7 @@
   <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
   <title>Embedica.ai</title>
+  <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
 </head>
 
 <body>
@@ -21,5 +22,25 @@
   integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"
   integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
+<script>
+  function draw(data) {
+    var chart = new CanvasJS.Chart("chartContainer", {
+      animationEnabled: true,
+      data: [{
+        type: "pie",
+        startAngle: 270,
+        yValueFormatString: "##0.00\"%\"",
+        indexLabel: "{label} {y}",
+        dataPoints: [
+          { y: data["values"][0], label: data["labels"][0], color: data["colors"][0] },
+          { y: data["values"][1], label: data["labels"][1], color: data["colors"][1] },
+          { y: data["values"][2], label: data["labels"][2], color: data["colors"][2] },
+        ]
+      }]
+    });
+    chart.render();
+
+  }
+</script>
 
 </html>

@@ -15,6 +15,10 @@ class ToolBox extends React.Component {
         this.props.api_request(url, text);
     }
 
+    clear = () => {
+        var textid = this.state.idname
+        document.getElementById(textid).value = "";
+    }
     render() {
 
         var category = this.props.category;
@@ -29,13 +33,14 @@ class ToolBox extends React.Component {
 
         return (
             <div>
-                <div style={{ height: 60 }}></div>
+                <div style={{ height: 40 }}></div>
                 <div className="txtinput">
                     <div style={{ height: 30 }}></div>
                     <div className="wrapperform">
                         <div><h5 className="title">{category}</h5></div>
                         <textarea className="form-control" id={this.state.idname}></textarea>
                         <button className="cusbtn" onClick={this.send_api_request}>{this.state.btncaption}</button>
+                        <button className="clrbtn" onClick={this.clear}>Clear</button>
                     </div>
                 </div>
                 <div>

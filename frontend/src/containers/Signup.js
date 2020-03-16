@@ -18,13 +18,24 @@ class RegistrationForm extends React.Component {
     lastname: "",
     email: "",
     password1: "",
-    password2: ""
+    password2: "",
+    pwd1error: "",
+    pwd2error: "",
   };
 
   handleSubmit = e => {
     e.preventDefault();
     const { username, firstname, lastname, email, password1, password2 } = this.state;
     this.props.signup(username, email, password1, password2);
+    if (password1.length < 8) {
+      this.setState({ pwd1error: "password must be more than 8 letters", pwd2error: "" })
+    }
+    if (password1.length >= 8 && password1 != password2) {
+      this.setState({ pwd2error: "Your password are not confirmed correctly", pwd1error: "" })
+    }
+    if (password1.length >= 8 && password1 == password2) {
+      this.setState({ pwd2error: "", pwd1error: "" })
+    }
   };
 
   handleChange = e => {
@@ -36,7 +47,7 @@ class RegistrationForm extends React.Component {
     const { username, firstname, lastname, email, password1, password2 } = this.state;
     const { error, loading, token } = this.props;
     if (token) {
-      return <Redirect to="/" />;
+      return <Redirect to="/login" />;
     }
     return (
       <Grid
@@ -48,7 +59,7 @@ class RegistrationForm extends React.Component {
           <Header as="h2" color="teal" textAlign="center">
             Signup to your account
           </Header>
-          {error && <p>{this.props.error.message}</p>}
+          <p className="error">{error}</p>
 
           <React.Fragment>
             <Form size="large" onSubmit={this.handleSubmit}>
@@ -61,6 +72,7 @@ class RegistrationForm extends React.Component {
                   icon="user"
                   iconPosition="right"
                   placeholder="Firstname"
+                  required
                 />
                 <Form.Input
                   onChange={this.handleChange}
@@ -70,15 +82,18 @@ class RegistrationForm extends React.Component {
                   icon="user"
                   iconPosition="right"
                   placeholder="Lastname"
+                  required
                 />
                 <Form.Input
                   onChange={this.handleChange}
                   value={email}
+                  type="email"
                   name="email"
                   fluid
                   icon="mail"
                   iconPosition="right"
                   placeholder="E-mail address"
+                  required
                 />
                 <Form.Input
                   onChange={this.handleChange}
@@ -89,7 +104,9 @@ class RegistrationForm extends React.Component {
                   iconPosition="right"
                   placeholder="Password"
                   type="password"
+                  required
                 />
+                <p className="error">{this.state.pwd1error}</p>
                 <Form.Input
                   onChange={this.handleChange}
                   fluid
@@ -99,8 +116,9 @@ class RegistrationForm extends React.Component {
                   iconPosition="right"
                   placeholder="Confirm password"
                   type="password"
+                  required
                 />
-
+                <p className="error">{this.state.pwd2error}</p>
                 <Button
                   color="teal"
                   fluid

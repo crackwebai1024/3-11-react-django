@@ -7,7 +7,6 @@ class RemoveStopwords extends React.Component {
         var data = [];
         var stopwords = "";
         data = this.props.data["result"]
-        debugger
         if (data != []) {
             for (var x in data) {
                 stopwords += " '" + data[x] + "', "

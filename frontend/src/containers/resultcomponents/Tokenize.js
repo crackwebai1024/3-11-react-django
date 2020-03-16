@@ -7,7 +7,6 @@ class Tokenize extends React.Component {
         var data = [];
         var tokenwords = "";
         data = this.props.data["result"]
-        debugger
         if (data != []) {
             for (var x in data) {
                 tokenwords += " '" + data[x] + "', "

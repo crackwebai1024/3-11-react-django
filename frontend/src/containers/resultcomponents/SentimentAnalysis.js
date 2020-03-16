@@ -5,8 +5,6 @@ import Chart from "./Chart";
 class SentimentAnalysis extends React.Component {
 
     render() {
-        var data = this.props.data;
-        debugger
         return (
             <div>
                 <div style={{ height: 30 }}></div>

@@ -11,6 +11,7 @@ export const user_item_tool = (titleid, category) => {
 };
 
 export const user_cat_tool = (title) => {
+    debugger
     return {
         type: actionTypes.USER_CAT,
         title: title
@@ -46,7 +47,7 @@ export const api_request = (url, text) => {
     console.log(URL, url)
     url = url.replace(/\s/g, "");
     const token = localStorage.getItem("token");
-    url = URL + "api/" + url + "/";
+    url = URL + "api/" + url + "/" + `?text={text}`;
     console.log(url, text)
     debugger
     return dispatch => {

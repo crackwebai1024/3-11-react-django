@@ -53,7 +53,7 @@ const user_cat_tool = (state, action) => {
             category = "Article Recommender";
 
     }
-
+    debugger
     return updateObject(state, {
         title: action.title,
         category: category,
@@ -84,6 +84,7 @@ const hisres = (state, action) => {
 const reducer = (state = initialState, action) => {
     switch (action.type) {
         case actionTypes.USER_CAT:
+            debugger
             return user_cat_tool(state, action);
         case actionTypes.USER_ITEM:
             return user_item_tool(state, action);

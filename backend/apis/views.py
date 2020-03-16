@@ -83,7 +83,7 @@ class SeeUserHistory(APIView):
         return Response(response_data)
         
 class SentimentAnalysis(APIView):
-    def __init__(self, request):
+    def get(self, request):
         text = self.request.query_params.get('text')
         action = "Sentiment Analysis"
         token = self.request.query_params.get('token')

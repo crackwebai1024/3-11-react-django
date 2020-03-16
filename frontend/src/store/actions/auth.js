@@ -23,6 +23,7 @@ export const authFail = error => {
 };
 
 export const logout = () => {
+  debugger
   localStorage.removeItem("token");
   localStorage.removeItem("expirationDate");
   return {
@@ -58,7 +59,7 @@ export const authLogin = (username, password) => {
         dispatch(checkAuthTimeout(3600));
       })
       .catch(err => {
-        debugger
+        err = "Your username or password is incorrect"
         dispatch(authFail(err));
       });
   };
@@ -83,6 +84,8 @@ export const authSignup = (username, email, password1, password2) => {
         dispatch(checkAuthTimeout(3600));
       })
       .catch(err => {
+        debugger
+        err = "Your email is incorrect or used by another person";
         dispatch(authFail(err));
       });
   };

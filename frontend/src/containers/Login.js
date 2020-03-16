@@ -43,8 +43,7 @@ class LoginForm extends React.Component {
           <Header as="h2" color="teal" textAlign="center">
             Log-in to your account
           </Header>
-          {error && <p>{this.props.error.message}</p>}
-
+          <p className="error">{error}</p>
           <React.Fragment>
             <Form size="large" onSubmit={this.handleSubmit}>
               <Segment stacked>
@@ -56,6 +55,7 @@ class LoginForm extends React.Component {
                   icon="user"
                   iconPosition="right"
                   placeholder="Username"
+                  required
                 />
                 <Form.Input
                   onChange={this.handleChange}
@@ -66,6 +66,7 @@ class LoginForm extends React.Component {
                   iconPosition="right"
                   placeholder="Password"
                   type="password"
+                  required
                 />
 
                 <Button
