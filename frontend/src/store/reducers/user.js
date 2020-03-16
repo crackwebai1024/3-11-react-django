@@ -5,7 +5,9 @@ const initialState = {
     title: "Recommendation System",
     category: "Article Recommender",
     data: "",
+    hisdata: "",
     reserror: "",
+    clickhisbtn: false,
 };
 
 const user_item_tool = (state, action) => {
@@ -30,6 +32,7 @@ const user_item_tool = (state, action) => {
         category: action.category,
         data: "",
         reserror: "",
+        clickhisbtn: false,
     });
 };
 
@@ -56,13 +59,25 @@ const user_cat_tool = (state, action) => {
         category: category,
         data: "",
         reserror: "",
+        clickhisbtn: false,
     });
 };
 
 const res = (state, action) => {
     return updateObject(state, {
         data: action.data,
-        reserror: action.reserror
+        reserror: action.reserror,
+        clickhisbtn: false,
+    });
+};
+
+const hisres = (state, action) => {
+    debugger
+    return updateObject(state, {
+        data: "",
+        hisdata: action.hisdata,
+        reserror: action.reserror,
+        clickhisbtn: true,
     });
 };
 
@@ -75,6 +90,9 @@ const reducer = (state = initialState, action) => {
         case actionTypes.RESPONSE_SUCCESS:
         case actionTypes.RESPONSE_FAILED:
             return res(state, action);
+        case actionTypes.HISRESPONSE_SUCCESS:
+            debugger
+            return hisres(state, action);
         default:
             return state;
     }

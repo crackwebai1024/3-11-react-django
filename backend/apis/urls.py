@@ -1,5 +1,7 @@
 from django.urls import path, include
+from rest_framework import routers
 from .views import *
+
 urlpatterns = [
     path('SentimentAnalysis/', SentimentAnalysis.as_view()),
     path('ArticleRecommender/', ArticleRecommender.as_view()),
@@ -14,4 +16,5 @@ urlpatterns = [
     path('RemoveWhiteSpaces/', RemoveWhiteSpaces.as_view()),
     path('RemoveStopwords/', RemoveStopwords.as_view()),
     path('Plagarism/', Plagarism.as_view()),
+    path('seehistory/', SeeUserHistory.as_view()),
 ]

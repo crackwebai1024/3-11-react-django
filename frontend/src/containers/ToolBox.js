@@ -7,7 +7,7 @@ import Result from "./Result";
 class ToolBox extends React.Component {
     state = {
         idname: "textcapture",
-        btncaption: "Search"
+        btncaption: "Search",
     }
     send_api_request = (e) => {
         var url = this.props.category;
@@ -16,14 +16,17 @@ class ToolBox extends React.Component {
     }
 
     render() {
+
         var category = this.props.category;
+
         if (category == "Article Recommender" && this.state.idname != "articlecapture") {
             this.setState({ idname: "articlecapture", btncaption: "Search" });
         }
+
         if (category != "Article Recommender" && this.state.idname == "articlecapture") {
             this.setState({ idname: "textcapture", btncaption: "Detect" });
         }
-        debugger
+
         return (
             <div>
                 <div style={{ height: 60 }}></div>

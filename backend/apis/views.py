@@ -1,11 +1,12 @@
 from django.shortcuts import render
-
+from .models import History
 # Create your views here.
+from rest_framework import viewsets
 from rest_framework.views import APIView
-from rest_framework.generics import CreateAPIView
+from rest_framework.generics import ListCreateAPIView, CreateAPIView
 from rest_framework.response import Response
 from django.views.decorators.csrf import ensure_csrf_cookie
-
+from .serializers import UserHistorySerializer
 
 #this is for api#
 import numpy as np
@@ -50,15 +51,43 @@ from matplotlib.figure import Figure
 ### machine learning module import ###
 
 from django.http import HttpResponse, JsonResponse
+from datetime import date
 
 nlp = spacy.load('en_core_web_sm')
 HTML_WRAPPER = """<div style="overflow-x: auto; border: 1px solid #e6e9ef; border-radius: 0.25rem; padding: 1rem">{}</div>"""
 
+def input(text, action, token):
+    history = History()
+    history.token = token
+    history.action = action
+    history.text = text
+    today = date.today()
+    history.time = today.strftime("%Y-%m-%d")
+    history.save()
 
-
-class SentimentAnalysis(APIView):
+class SeeUserHistory(APIView):
     def get(self, request):
+        token = self.request.query_params.get('token')
+        data = History.objects.filter(token = token)
+        length = len(data)
+        action = []
+        text = []
+        time = []
+        for i in range(length):
+            x = str(data[i])
+            part = x.split("{{{{{***}}}}}")
+            action.append(part[0])
+            text.append(part[1])
+            time.append(part[2])
+        response_data = { "action": action, "text":text, "time": time }
+        return Response(response_data)
+        
+class SentimentAnalysis(APIView):
+    def __init__(self, request):
         text = self.request.query_params.get('text')
+        action = "Sentiment Analysis"
+        token = self.request.query_params.get('token')
+        input(text, action, token)
         sid_obj = SentimentIntensityAnalyzer()
         sentiment_dict = sid_obj.polarity_scores(text)       
         labels = ['Positive', 'Negative', 'Neutral']
@@ -69,6 +98,10 @@ class SentimentAnalysis(APIView):
 
 class ArticleRecommender(APIView):
     def get(self, request):
+        text = self.request.query_params.get('text')
+        action = "Article Recommender"
+        token = self.request.query_params.get('token')
+        input(text, action, token)
         df = pd.read_csv("apis/data/keyworsemerj1.csv") 
         int_features = [x for x in self.request.query_params.get('text')]
         results = df[df["KEYWORDS"].str.contains(int_features[0])] 
@@ -79,12 +112,14 @@ class ArticleRecommender(APIView):
 class LanguageDetection(APIView):
     def get(self, request):
         text = self.request.query_params.get('text')
+        action = "Language Detection"
+        token = self.request.query_params.get('token')
+        input(text, action, token)
         results = detect(text)
         response_data = {"rawtext": results}
         return Response(response_data)
 
 class TextSummarization(APIView):
-
     def tokenizer(self, s):
         tokens = []
         for word in s.split(' '):
@@ -146,6 +181,9 @@ class TextSummarization(APIView):
 # call the function to generate the summary
     def get(self, request):
         text = self.request.query_params.get('text')
+        action = "Text Summarization"
+        token = self.request.query_params.get('token')
+        input(text, action, token)
         #######
         tokens = self.tokenizer(text)
         sents = self.sent_tokenizer(text)
@@ -160,17 +198,23 @@ class TextSummarization(APIView):
 
 class EntityExtraction(APIView):
     def get(self, request):
-        raw_text = self.request.query_params.get('text')
-        docx = nlp(raw_text)
+        text = self.request.query_params.get('text')
+        action = "Entity Extraction"
+        token = self.request.query_params.get('token')
+        input(text, action, token)
+        docx = nlp(text)
         html = displacy.render(docx,style="ent")
         html = html.replace("\n\n","\n")
         result = HTML_WRAPPER.format(html)
-        response_data = {"rawtext": raw_text, "result": result}
+        response_data = {"rawtext": text, "result": result}
         return Response(response_data)
 
 class KeywordExtraction(APIView):
     def get(self, request):
         text = self.request.query_params.get('text')
+        action = "Keyword Extraction"
+        token = self.request.query_params.get('token')
+        input(text, action, token)
 
         # Reka setup with stopword directory
         stop_dir = "apis/data/a.txt"
@@ -183,6 +227,10 @@ class KeywordExtraction(APIView):
 
 class ArticleExtraction(APIView):
     def get(self, request):
+        text = self.request.query_params.get('text')
+        action = "Article Extraction"
+        token = self.request.query_params.get('token')
+        input(text, action, token)
         url = [x for x in self.request.query_params.get('text')]
         linksdata = url[0]
         headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36'}
@@ -208,6 +256,9 @@ class ArticleExtraction(APIView):
 class Tokenize(APIView):
     def get(self, request):
         text = self.request.query_params.get('text')
+        action = "Tokenize"
+        token = self.request.query_params.get('token')
+        input(text, action, token)
         tokens = word_tokenize(text)
         text = [i for i in tokens]
         response_data = {"result": text}
@@ -216,6 +267,9 @@ class Tokenize(APIView):
 class ConvertUppercasetoLower(APIView):
     def get(self, request):
         text = self.request.query_params.get('text')
+        action = "Convert Uppercase to Lower"
+        token = self.request.query_params.get('token')
+        input(text, action, token)
         input_str = text.lower()
         response_data = {"result": input_str}
         return Response(response_data)
@@ -223,6 +277,9 @@ class ConvertUppercasetoLower(APIView):
 class RemoveNumbers(APIView):
     def get(self, request):
         text = self.request.query_params.get('text')
+        action = "Remove Numbers"
+        token = self.request.query_params.get('token')
+        input(text, action, token)
         result = re.sub(r"\d+", "", text)
         response_data = {"result": result}
         return Response(response_data)
@@ -230,6 +287,9 @@ class RemoveNumbers(APIView):
 class RemoveWhiteSpaces(APIView):
     def get(self, request):
         text = self.request.query_params.get('text')
+        action = "Remove WhiteSpaces"
+        token = self.request.query_params.get('token')
+        input(text, action, token)
         result = text.replace(" ", "")
         response_data = {"result": result}
         return Response(response_data)
@@ -237,6 +297,9 @@ class RemoveWhiteSpaces(APIView):
 class RemoveStopwords(APIView):
     def get(self, request):
         text = self.request.query_params.get('text')
+        action = "Remove Stopwords"
+        token = self.request.query_params.get('token')
+        input(text, action, token)
         stop_words = set(stopwords.words('english'))
         word_tokens = word_tokenize(text) 
         text = [w for w in word_tokens if not w in stop_words] 
@@ -249,6 +312,10 @@ class RemoveStopwords(APIView):
 
 class Plagarism(APIView):
     def get(self, request):
+        text = self.request.query_params.get('text')
+        action = "Plagarism"
+        token = self.request.query_params.get('token')
+        input(text, action, token)
         response_data = {"result": text}
         return Response(response_data)
 

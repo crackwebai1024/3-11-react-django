@@ -25,6 +25,15 @@ export const responseSuccess = (res) => {
     }
 }
 
+export const hisresponseSuccess = (res) => {
+    debugger
+    return {
+        type: actionTypes.HISRESPONSE_SUCCESS,
+        hisdata: res.data,
+        reserror: "",
+    }
+}
+
 export const responseFailed = (error) => {
     return {
         type: actionTypes.RESPONSE_FAILED,
@@ -36,15 +45,34 @@ export const responseFailed = (error) => {
 export const api_request = (url, text) => {
     console.log(URL, url)
     url = url.replace(/\s/g, "");
-    url = URL + "api/" + url + "/" + `?text=${text}`;
+    const token = localStorage.getItem("token");
+    url = URL + "api/" + url + "/";
     console.log(url, text)
     debugger
     return dispatch => {
         axios
-            .get(url)
+            .get(url, { params: { text: text, token: token } })
             .then(res => {
                 debugger
                 dispatch(responseSuccess(res));
+            })
+            .catch(err => {
+                const error = "Error 404 Page Not Found"
+                dispatch(responseFailed(error));
+            });
+    };
+};
+
+export const user_history = () => {
+    const token = localStorage.getItem("token");
+    var url = URL + "api/seehistory/";
+    debugger
+    return dispatch => {
+        axios
+            .get(url, { params: { token: token } })
+            .then(res => {
+                debugger
+                dispatch(hisresponseSuccess(res));
             })
             .catch(err => {
                 const error = "Error 404 Page Not Found"

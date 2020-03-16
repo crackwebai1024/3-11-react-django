@@ -163,11 +163,13 @@ li{
 
 .imground{
     height: 70px ;
+    display: block !important;
     background-color: rgb(200, 200, 200) !important;
 }
 
 .bodymargin{
     height: 70px ;
+    margin-left: 0px !important;
     background-color: white !important;
     padding: 20px 100px 20px 150px !important;
 }
@@ -179,4 +181,25 @@ li{
 #resulttext{
     background-color: black;
     color:white;
+}
+
+.right{
+    margin-right: -20p !important;
+    float: right !important;
+}
+
+.hisdive{
+    margin-left: 40px !important;
+    padding-left: 40px !important;
+    padding-top: 40px !important;
+}
+
+.textable{
+    width: 800px !important;
+}
+
+.hisdiv{
+    text-align: center;
+    font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+    font-size: 15px;
 }
